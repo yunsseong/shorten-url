@@ -8,20 +8,20 @@ import yunsseong.shortenurl.limit.Limitable;
 @RequiredArgsConstructor
 public class ShortenUrlKeyGenerator {
     private final String stringPool = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private final RandomNumberGenerator randomNumberGenerator;
-    private final Limitable shortenUrlKeyLengthLimit;
+    private final RandomNumberGenerator randNumGen;
+    private final Limitable limit;
 
     public String generateShortenUrlKey() {
         StringBuilder shortenUrlKey = new StringBuilder();
         do {
             String value = generateRandomValue();
             shortenUrlKey.append(value);
-        } while (shortenUrlKey.length() != shortenUrlKeyLengthLimit.getLimit());
+        } while (shortenUrlKey.length() != limit.getLimit());
         return shortenUrlKey.toString();
     }
 
     public String generateRandomValue() {
-        int randomNum = randomNumberGenerator.generateRandomNumber(stringPool.length());
+        int randomNum = randNumGen.generateRandomNumber(stringPool.length());
         return String.valueOf(stringPool.charAt(randomNum));
     }
 }
