@@ -1,6 +1,8 @@
 package yunsseong.shortenurl.api;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +20,9 @@ public class Controller {
     private final UrlMapper urlMapper;
 
     @GetMapping("/{key}")
-    public ResponseEntity<String> getOriginalUrl(@PathVariable String key) {
-        return ResponseEntity.ok(urlMapper.getOriginalUrlByKey(key));
+    public void getOriginalUrl(@PathVariable String key, HttpServletResponse response) throws IOException {
+        String originalUrl = urlMapper.getOriginalUrlByKey(key);
+        response.sendRedirect(originalUrl);
     }
 
     @PostMapping
