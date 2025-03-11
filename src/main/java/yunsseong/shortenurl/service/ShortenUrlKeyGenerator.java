@@ -11,6 +11,7 @@ import yunsseong.shortenurl.limit.Limitable;
 public class ShortenUrlKeyGenerator {
     private final RandomNumberGenerator randNumGen;
     private final Limitable limit;
+    private final String stringPool = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final Set<String> urlKeySet = new HashSet<>();
     private long maxLimit = 0L;
 
