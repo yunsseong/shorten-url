@@ -16,7 +16,7 @@ public class ShortenUrlKeyGenerator {
     private long maxLimit = 0L;
 
     public String getUniqueShortenUrlKey() {
-        if (urlKeySet.size() == maxLimit) {
+        if (urlKeySet.size() == getMaxLimit()) {
             throw new RuntimeException("키를 생성할 수 없습니다.");
         }
 
