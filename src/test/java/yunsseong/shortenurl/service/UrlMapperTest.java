@@ -1,0 +1,48 @@
+package yunsseong.shortenurl.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import yunsseong.shortenurl.limit.ShortenKeyLengthLimit;
+
+class UrlMapperTest {
+    private final ShortenKeyLengthLimit limit = new ShortenKeyLengthLimit();
+
+    @Test
+    @DisplayName("새 원본 URL과 단축 URL 키 맵핑 테스트")
+    void makeNewMappingTest() {
+        // given
+        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
+        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        UrlMapper urlMapper = new UrlMapper(keyGen);
+        String originalUrl = "http://a.com";
+
+        // when
+        String mappedKey = urlMapper.makeNewMapping(originalUrl);
+        String foundUrl = urlMapper.getOriginalUrlByKey(mappedKey);
+
+        // then
+        Assertions.assertThat(foundUrl).isEqualTo(originalUrl);
+    }
+
+    @Test
+    @DisplayName("없는 단축 URL 키로 원본 URL 조회 시 예외 발생 테스트")
+    void getOriginalUrlByInvalidKey() {
+        // given
+        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
+        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        UrlMapper urlMapper = new UrlMapper(keyGen);
+        String invalidKey = "ABC12345";
+        String exceptionMessage = "맵핑된 URL을 찾을 수 없습니다.";
+
+        // when
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> urlMapper.getOriginalUrlByKey(invalidKey));
+
+        // then
+        assertEquals(exceptionMessage, exception.getMessage());
+
+    }
+}
