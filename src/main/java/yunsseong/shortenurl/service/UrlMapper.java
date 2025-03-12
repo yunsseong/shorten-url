@@ -20,6 +20,10 @@ public class UrlMapper {
     }
 
     public String getOriginalUrlByKey(String key) {
-        return urlMap.get(key).getUrl();
+        OriginalUrl foundOriginalUrl = urlMap.get(key);
+        if (foundOriginalUrl == null) {
+            throw new IllegalArgumentException("맵핑된 URL을 찾을 수 없습니다.");
+        }
+        return foundOriginalUrl.getUrl();
     }
 }
