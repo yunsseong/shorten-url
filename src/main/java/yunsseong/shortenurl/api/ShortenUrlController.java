@@ -15,7 +15,7 @@ import yunsseong.shortenurl.service.UrlMapper;
 
 @RestController
 @RequiredArgsConstructor
-public class Controller {
+public class ShortenUrlController {
 
     private final UrlMapper urlMapper;
 
