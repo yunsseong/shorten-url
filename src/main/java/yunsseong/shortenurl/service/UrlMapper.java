@@ -30,4 +30,8 @@ public class UrlMapper {
     public String getOriginalUrlByKey(String key) {
         return getOriginalUrl(key).getUrl();
     }
+
+    public Long getAccessCount(String key) {
+        return getOriginalUrl(key).getAccessCount();
+    }
 }
