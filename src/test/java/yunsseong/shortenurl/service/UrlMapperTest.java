@@ -1,6 +1,7 @@
 package yunsseong.shortenurl.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -43,6 +44,25 @@ class UrlMapperTest {
 
         // then
         assertEquals(exceptionMessage, exception.getMessage());
+    }
 
+    @Test
+    @DisplayName("URL 조회 횟수 가져오기 기능 테스트")
+    void UrlAccessCountTest() {
+        // given
+        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
+        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        UrlMapper urlMapper = new UrlMapper(keyGen);
+        String originalUrl = "http://a.com";
+        Long expectAccessCount = 1L;
+
+        // when
+        String mappedKey = urlMapper.makeNewMapping(originalUrl);
+        String foundUrl = urlMapper.getOriginalUrlByKey(mappedKey);
+        Long accessCount = urlMapper.getAccessCount(mappedKey);
+
+        // then
+        assertEquals(originalUrl, foundUrl);
+        assertEquals(expectAccessCount, accessCount);
     }
 }
