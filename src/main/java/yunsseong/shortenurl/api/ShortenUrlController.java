@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import yunsseong.shortenurl.dto.request.AccessCountResponse;
 import yunsseong.shortenurl.dto.request.UrlRequest;
 import yunsseong.shortenurl.service.UrlMapper;
 
@@ -30,5 +31,19 @@ public class ShortenUrlController {
         String mappedKey = urlMapper.makeNewMapping(urlRequest.originalUrl());
         String shortenUrl = request.getRequestURL() + mappedKey;
         return ResponseEntity.ok(shortenUrl);
+    }
+
+    @GetMapping("/count/{key}")
+    public ResponseEntity<AccessCountResponse> getAccessCount(@PathVariable String key, HttpServletRequest request) {
+        StringBuilder shortenUrlBuilder = new StringBuilder();
+        String shortenUrl = shortenUrlBuilder.append(request.getScheme())
+                .append("://")
+                .append(request.getHeader("Host"))
+                .append("/")
+                .append(key).toString();
+        String originalUrl = urlMapper.getOriginalUrlByKey(key);
+        Long accessCount = urlMapper.getAccessCount(key);
+        AccessCountResponse response = new AccessCountResponse(shortenUrl, originalUrl, accessCount);
+        return ResponseEntity.ok(response);
     }
 }
