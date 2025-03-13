@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import yunsseong.shortenurl.dto.request.AccessCountResponse;
 import yunsseong.shortenurl.dto.request.UrlRequest;
-import yunsseong.shortenurl.service.UrlMapper;
+import yunsseong.shortenurl.application.UrlMapper;
 
 @RestController
 @RequiredArgsConstructor

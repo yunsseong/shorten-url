@@ -1,10 +1,10 @@
-package yunsseong.shortenurl.service;
+package yunsseong.shortenurl.application;
 
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import yunsseong.shortenurl.limit.Limitable;
+import yunsseong.shortenurl.domain.limit.Limitable;
 
 @Service
 @RequiredArgsConstructor

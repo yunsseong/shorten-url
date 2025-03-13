@@ -1,10 +1,10 @@
-package yunsseong.shortenurl.service;
+package yunsseong.shortenurl.application;
 
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import yunsseong.shortenurl.domain.OriginalUrl;
+import yunsseong.shortenurl.domain.url.OriginalUrl;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.service;
+package yunsseong.shortenurl.application;
 
 import java.util.Random;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.limit;
+package yunsseong.shortenurl.domain.limit;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

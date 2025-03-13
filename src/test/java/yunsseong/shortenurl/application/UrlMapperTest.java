@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.service;
+package yunsseong.shortenurl.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import yunsseong.shortenurl.limit.ShortenKeyLengthLimit;
+import yunsseong.shortenurl.domain.limit.ShortenKeyLengthLimit;
 
 class UrlMapperTest {
     private final ShortenKeyLengthLimit limit = new ShortenKeyLengthLimit();
