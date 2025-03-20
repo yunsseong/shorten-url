@@ -12,8 +12,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
         ErrorCode errorCode = ex.getErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse(errorCode.getHttpStatus(), ex.getMessage(),
-                LocalDateTime.now());
+        ErrorResponse errorResponse = new ErrorResponse(
+                errorCode.getHttpStatus().value(),
+                errorCode.getHttpStatus().getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
         return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
     }
 }
