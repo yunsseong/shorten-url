@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import yunsseong.shortenurl.common.exception.CustomException;
+import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
 import yunsseong.shortenurl.domain.limit.ShortenKeyLengthLimit;
 
 class UrlMapperTest {
@@ -36,10 +38,10 @@ class UrlMapperTest {
         ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
         UrlMapper urlMapper = new UrlMapper(keyGen);
         String invalidKey = "ABC12345";
-        String exceptionMessage = "맵핑된 URL을 찾을 수 없습니다.";
+        String exceptionMessage = UrlErrorCode.NOT_EXIST_URL.getMessage();
 
         // when
-        Exception exception = assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(CustomException.class,
                 () -> urlMapper.getOriginalUrlByKey(invalidKey));
 
         // then
