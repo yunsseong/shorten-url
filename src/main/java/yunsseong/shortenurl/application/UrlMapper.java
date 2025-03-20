@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yunsseong.shortenurl.common.exception.CustomException;
+import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
 import yunsseong.shortenurl.domain.url.OriginalUrl;
 
 @Service
@@ -22,7 +24,7 @@ public class UrlMapper {
     private OriginalUrl getOriginalUrl(String key) {
         OriginalUrl foundOriginalUrl = urlMap.get(key);
         if (foundOriginalUrl == null) {
-            throw new IllegalArgumentException("맵핑된 URL을 찾을 수 없습니다.");
+            throw new CustomException(UrlErrorCode.NOT_EXIST_URL);
         }
         return foundOriginalUrl;
     }

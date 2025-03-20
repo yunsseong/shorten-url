@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yunsseong.shortenurl.common.exception.CustomException;
+import yunsseong.shortenurl.common.exception.error_code.KeyErrorCode;
 import yunsseong.shortenurl.domain.limit.Limitable;
 
 @Service
@@ -17,7 +19,7 @@ public class ShortenUrlKeyGenerator {
 
     public String getUniqueShortenUrlKey() {
         if (urlKeySet.size() == getMaxLimit()) {
-            throw new RuntimeException("키를 생성할 수 없습니다.");
+            throw new CustomException(KeyErrorCode.EXHAUST_ALL_KEY);
         }
 
         String shortenUrlKey = "";
