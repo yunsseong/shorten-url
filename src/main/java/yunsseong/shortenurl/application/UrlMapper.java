@@ -1,7 +1,7 @@
 package yunsseong.shortenurl.application;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yunsseong.shortenurl.common.exception.CustomException;
@@ -13,7 +13,7 @@ import yunsseong.shortenurl.domain.url.OriginalUrl;
 public class UrlMapper {
 
     private final ShortenUrlKeyGenerator keyGen;
-    private Map<String, OriginalUrl> urlMap = new HashMap<>();
+    private final Map<String, OriginalUrl> urlMap = new ConcurrentHashMap<>();
 
     public String makeNewMapping(String url) {
         String key = keyGen.getUniqueShortenUrlKey();
