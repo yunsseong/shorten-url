@@ -24,7 +24,7 @@ class UrlMapperTest {
 
         // when
         String mappedKey = urlMapper.makeNewMapping(originalUrl);
-        String foundUrl = urlMapper.getOriginalUrlByKey(mappedKey);
+        String foundUrl = urlMapper.requestOriginalUrl(mappedKey);
 
         // then
         Assertions.assertThat(foundUrl).isEqualTo(originalUrl);
@@ -42,7 +42,7 @@ class UrlMapperTest {
 
         // when
         Exception exception = assertThrows(CustomException.class,
-                () -> urlMapper.getOriginalUrlByKey(invalidKey));
+                () -> urlMapper.requestOriginalUrl(invalidKey));
 
         // then
         assertEquals(exceptionMessage, exception.getMessage());
@@ -56,15 +56,15 @@ class UrlMapperTest {
         ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
         UrlMapper urlMapper = new UrlMapper(keyGen);
         String originalUrl = "http://a.com";
-        Long expectAccessCount = 1L;
+        Long expectAccessCount = 2L;
 
         // when
         String mappedKey = urlMapper.makeNewMapping(originalUrl);
-        String foundUrl = urlMapper.getOriginalUrlByKey(mappedKey);
+        urlMapper.requestOriginalUrl(mappedKey);
+        urlMapper.requestOriginalUrl(mappedKey);
         Long accessCount = urlMapper.getAccessCount(mappedKey);
 
         // then
-        assertEquals(originalUrl, foundUrl);
         assertEquals(expectAccessCount, accessCount);
     }
 }
