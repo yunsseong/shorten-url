@@ -8,8 +8,12 @@ public class OriginalUrl {
         this.url = url;
     }
 
-    public String getUrl() {
+    public String getUrlWithCountUp() {
         countUp();
+        return url;
+    }
+
+    public String getUrl() {
         return url;
     }
 
