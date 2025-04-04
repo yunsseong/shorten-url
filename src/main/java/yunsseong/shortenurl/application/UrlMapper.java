@@ -29,9 +29,11 @@ public class UrlMapper {
         return foundOriginalUrl;
     }
 
-    public String getOriginalUrlByKey(String key) {
-        return getOriginalUrl(key).getUrl();
+    public String requestOriginalUrl(String key) {
+        return getOriginalUrl(key).getUrlWithCountUp();
     }
+
+    public String findOriginalUrlByKey(String key) {return getOriginalUrl(key).getUrl();}
 
     public Long getAccessCount(String key) {
         return getOriginalUrl(key).getAccessCount();

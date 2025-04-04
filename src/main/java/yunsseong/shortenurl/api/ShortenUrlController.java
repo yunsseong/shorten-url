@@ -22,7 +22,7 @@ public class ShortenUrlController {
 
     @GetMapping("/{key}")
     public void getOriginalUrl(@PathVariable String key, HttpServletResponse response) throws IOException {
-        String originalUrl = urlMapper.getOriginalUrlByKey(key);
+        String originalUrl = urlMapper.requestOriginalUrl(key);
         response.sendRedirect(originalUrl);
     }
 
@@ -41,7 +41,7 @@ public class ShortenUrlController {
                 .append(request.getHeader("Host"))
                 .append("/")
                 .append(key).toString();
-        String originalUrl = urlMapper.getOriginalUrlByKey(key);
+        String originalUrl = urlMapper.findOriginalUrlByKey(key);
         Long accessCount = urlMapper.getAccessCount(key);
         AccessCountResponse response = new AccessCountResponse(shortenUrl, originalUrl, accessCount);
         return ResponseEntity.ok(response);
