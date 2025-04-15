@@ -18,20 +18,20 @@ public class Key {
     private final Set<String> urlKeySet = new HashSet<>();
     private long maxLimit = 0L;
 
-    public String getUniqueShortenUrlKey() {
+    public String getKey() {
         if (urlKeySet.size() == getMaxLimit()) {
             throw new CustomException(KeyErrorCode.EXHAUST_ALL_KEY);
         }
 
-        String shortenUrlKey = "";
+        String key = "";
         do {
-            shortenUrlKey = generateShortenUrlKey();
-        } while (urlKeySet.contains(shortenUrlKey));
-        urlKeySet.add(shortenUrlKey);
-        return shortenUrlKey;
+            key = generateKey();
+        } while (urlKeySet.contains(key));
+        urlKeySet.add(key);
+        return key;
     }
 
-    public String generateShortenUrlKey() {
+    public String generateKey() {
         StringBuilder shortenUrlKey = new StringBuilder();
         do {
             String value = generateRandomValue();
