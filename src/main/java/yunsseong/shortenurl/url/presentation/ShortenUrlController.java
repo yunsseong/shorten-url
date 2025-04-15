@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import yunsseong.shortenurl.url.dto.request.UrlComponent;
 import yunsseong.shortenurl.url.dto.response.AccessCountResponse;
 import yunsseong.shortenurl.url.dto.request.UrlRequest;
 import yunsseong.shortenurl.url.domain.UrlMapper;
@@ -21,29 +22,21 @@ public class ShortenUrlController {
     private final UrlMapper urlMapper;
 
     @GetMapping("/{key}")
-    public void getOriginalUrl(@PathVariable String key, HttpServletResponse response) throws IOException {
-        String originalUrl = urlMapper.requestOriginalUrl(key);
+    public void accessUrl(@PathVariable String key, HttpServletResponse response) throws IOException {
+        String originalUrl = urlMapper.access(key);
         response.sendRedirect(originalUrl);
     }
 
     @PostMapping
     public ResponseEntity<String> registerUrl(@RequestBody UrlRequest urlRequest, HttpServletRequest request) {
-        String mappedKey = urlMapper.makeNewMapping(urlRequest.originalUrl());
+        String mappedKey = urlMapper.register(urlRequest.originalUrl());
         String shortenUrl = request.getRequestURL() + mappedKey;
         return ResponseEntity.ok(shortenUrl);
     }
 
     @GetMapping("/count/{key}")
     public ResponseEntity<AccessCountResponse> getAccessCount(@PathVariable String key, HttpServletRequest request) {
-        StringBuilder shortenUrlBuilder = new StringBuilder();
-        String shortenUrl = shortenUrlBuilder.append(request.getScheme())
-                .append("://")
-                .append(request.getHeader("Host"))
-                .append("/")
-                .append(key).toString();
-        String originalUrl = urlMapper.findOriginalUrlByKey(key);
-        Long accessCount = urlMapper.getAccessCount(key);
-        AccessCountResponse response = new AccessCountResponse(shortenUrl, originalUrl, accessCount);
-        return ResponseEntity.ok(response);
+        UrlComponent urlComponent = new UrlComponent(request.getScheme(), request.getHeader("Host"));
+        return ResponseEntity.ok(urlMapper.getUrlAccessCountInfo(key, urlComponent));
     }
 }
