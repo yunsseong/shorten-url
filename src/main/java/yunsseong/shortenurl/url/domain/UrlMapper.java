@@ -1,42 +1,52 @@
 package yunsseong.shortenurl.url.domain;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import yunsseong.shortenurl.common.exception.CustomException;
-import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
 import yunsseong.shortenurl.key.domain.Key;
-import yunsseong.shortenurl.url.domain.OriginalUrl;
+import yunsseong.shortenurl.url.dto.request.UrlComponent;
+import yunsseong.shortenurl.url.dto.response.AccessCountResponse;
+import yunsseong.shortenurl.url.infrastructure.KeyRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UrlMapper {
 
-    private final Key keyGen;
-    private final Map<String, OriginalUrl> urlMap = new ConcurrentHashMap<>();
+    private final Key key;
+    private final KeyRepository keyRepository;
 
-    public String makeNewMapping(String url) {
-        String key = keyGen.getUniqueShortenUrlKey();
-        urlMap.put(key, new OriginalUrl(url));
-        return key;
+    public String register(String url) {
+        String generatedKey = this.key.getKey();
+        keyRepository.put(generatedKey, new OriginalUrl(url));
+        return generatedKey;
     }
 
-    private OriginalUrl getOriginalUrl(String key) {
-        OriginalUrl foundOriginalUrl = urlMap.get(key);
-        if (foundOriginalUrl == null) {
-            throw new CustomException(UrlErrorCode.NOT_EXIST_URL);
-        }
-        return foundOriginalUrl;
+    private OriginalUrl find(String key) {
+        return keyRepository.findOriginalUrlByKey(key);
     }
 
-    public String requestOriginalUrl(String key) {
-        return getOriginalUrl(key).getUrlWithCountUp();
+    public String access(String key) {
+        return find(key).getUrl();
     }
-
-    public String findOriginalUrlByKey(String key) {return getOriginalUrl(key).getUrl();}
 
     public Long getAccessCount(String key) {
-        return getOriginalUrl(key).getAccessCount();
+        return find(key).getAccessCount();
     }
+
+    public AccessCountResponse getUrlAccessCountInfo(String key, UrlComponent urlComponent) {
+        OriginalUrl originalUrl = find(key);
+        StringBuilder sb = new StringBuilder();
+        String shortenUrl = sb.append(urlComponent.scheme())
+                .append("://")
+                .append(urlComponent.host())
+                .append("/")
+                .append(key).toString();
+
+        return new AccessCountResponse(
+                shortenUrl,
+                originalUrl.viewUrl(),
+                originalUrl.getAccessCount()
+        );
+    }
+
+    public String findOriginalUrlByKey(String key) {return find(key).getUrl();}
 }
