@@ -26,7 +26,7 @@ class KeyTest {
         Key key = new Key(randNumGen, limit);
 
         // when
-        String shortenUrlKey = key.generateShortenUrlKey();
+        String shortenUrlKey = key.generateKey();
 
         // then
         assertThat(shortenUrlKey.length()).isEqualTo(limit.getLimit());
@@ -44,7 +44,7 @@ class KeyTest {
 
         // when
         for (int i = 0; i < key.getMaxLimit(); i++) {
-            result.add(key.getUniqueShortenUrlKey());
+            result.add(key.getKey());
         }
 
         // then
@@ -65,7 +65,7 @@ class KeyTest {
         // when
         Exception exception = assertThrows(CustomException.class, () -> {
             for (int i = 0; i < key.getMaxLimit() + 1; i++) {
-                key.getUniqueShortenUrlKey();
+                key.getKey();
             }
         });
 

@@ -12,6 +12,7 @@ import yunsseong.shortenurl.common.util.RandomNumber;
 import yunsseong.shortenurl.key.domain.Key;
 import yunsseong.shortenurl.limit.Limit;
 import yunsseong.shortenurl.url.domain.UrlMapper;
+import yunsseong.shortenurl.url.infrastructure.KeyRepository;
 
 class UrlMapperTest {
     private final Limit limit = new Limit();
@@ -22,12 +23,13 @@ class UrlMapperTest {
         // given
         RandomNumber randNumGen = new RandomNumber();
         Key keyGen = new Key(randNumGen, limit);
-        UrlMapper urlMapper = new UrlMapper(keyGen);
+        KeyRepository keyRepository = new KeyRepository();
+        UrlMapper urlMapper = new UrlMapper(keyGen, keyRepository);
         String originalUrl = "http://a.com";
 
         // when
-        String mappedKey = urlMapper.makeNewMapping(originalUrl);
-        String foundUrl = urlMapper.requestOriginalUrl(mappedKey);
+        String key = urlMapper.register(originalUrl);
+        String foundUrl = urlMapper.access(key);
 
         // then
         Assertions.assertThat(foundUrl).isEqualTo(originalUrl);
@@ -39,13 +41,14 @@ class UrlMapperTest {
         // given
         RandomNumber randNumGen = new RandomNumber();
         Key keyGen = new Key(randNumGen, limit);
-        UrlMapper urlMapper = new UrlMapper(keyGen);
+        KeyRepository keyRepository = new KeyRepository();
+        UrlMapper urlMapper = new UrlMapper(keyGen, keyRepository);
         String invalidKey = "ABC12345";
         String exceptionMessage = UrlErrorCode.NOT_EXIST_URL.getMessage();
 
         // when
         Exception exception = assertThrows(CustomException.class,
-                () -> urlMapper.requestOriginalUrl(invalidKey));
+                () -> urlMapper.access(invalidKey));
 
         // then
         assertEquals(exceptionMessage, exception.getMessage());
@@ -57,15 +60,16 @@ class UrlMapperTest {
         // given
         RandomNumber randNumGen = new RandomNumber();
         Key keyGen = new Key(randNumGen, limit);
-        UrlMapper urlMapper = new UrlMapper(keyGen);
+        KeyRepository keyRepository = new KeyRepository();
+        UrlMapper urlMapper = new UrlMapper(keyGen, keyRepository);
         String originalUrl = "http://a.com";
         Long expectAccessCount = 2L;
 
         // when
-        String mappedKey = urlMapper.makeNewMapping(originalUrl);
-        urlMapper.requestOriginalUrl(mappedKey);
-        urlMapper.requestOriginalUrl(mappedKey);
-        Long accessCount = urlMapper.getAccessCount(mappedKey);
+        String key = urlMapper.register(originalUrl);
+        urlMapper.access(key);
+        urlMapper.access(key);
+        Long accessCount = urlMapper.getAccessCount(key);
 
         // then
         assertEquals(expectAccessCount, accessCount);
