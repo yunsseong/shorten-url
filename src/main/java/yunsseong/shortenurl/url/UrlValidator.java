@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.application;
+package yunsseong.shortenurl.url;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

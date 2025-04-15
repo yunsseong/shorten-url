@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.common.dto.request;
+package yunsseong.shortenurl.url.dto.request;
 
 public record UrlRequest(String originalUrl) {
 }

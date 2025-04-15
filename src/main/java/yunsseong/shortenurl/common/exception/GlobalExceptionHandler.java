@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import yunsseong.shortenurl.common.exception.error_code.ErrorCode;
-import yunsseong.shortenurl.common.dto.response.ErrorResponse;
+import yunsseong.shortenurl.common.exception.dto.response.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

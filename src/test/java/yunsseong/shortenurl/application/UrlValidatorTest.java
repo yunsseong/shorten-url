@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import yunsseong.shortenurl.common.exception.CustomException;
 import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
+import yunsseong.shortenurl.url.UrlValidator;
 
 class UrlValidatorTest {
 

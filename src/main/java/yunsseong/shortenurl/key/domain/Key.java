@@ -1,17 +1,18 @@
-package yunsseong.shortenurl.application;
+package yunsseong.shortenurl.key.domain;
 
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yunsseong.shortenurl.common.util.RandomNumber;
 import yunsseong.shortenurl.common.exception.CustomException;
 import yunsseong.shortenurl.common.exception.error_code.KeyErrorCode;
-import yunsseong.shortenurl.domain.limit.Limitable;
+import yunsseong.shortenurl.limit.Limitable;
 
 @Service
 @RequiredArgsConstructor
-public class ShortenUrlKeyGenerator {
-    private final RandomNumberGenerator randNumGen;
+public class Key {
+    private final RandomNumber randNumGen;
     private final Limitable limit;
     private final String stringPool = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private final Set<String> urlKeySet = new HashSet<>();

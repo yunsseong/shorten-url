@@ -8,17 +8,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import yunsseong.shortenurl.common.exception.CustomException;
 import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
-import yunsseong.shortenurl.domain.limit.ShortenKeyLengthLimit;
+import yunsseong.shortenurl.common.util.RandomNumber;
+import yunsseong.shortenurl.key.domain.Key;
+import yunsseong.shortenurl.limit.Limit;
+import yunsseong.shortenurl.url.domain.UrlMapper;
 
 class UrlMapperTest {
-    private final ShortenKeyLengthLimit limit = new ShortenKeyLengthLimit();
+    private final Limit limit = new Limit();
 
     @Test
     @DisplayName("새 원본 URL과 단축 URL 키 맵핑 테스트")
     void makeNewMappingTest() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Key keyGen = new Key(randNumGen, limit);
         UrlMapper urlMapper = new UrlMapper(keyGen);
         String originalUrl = "http://a.com";
 
@@ -34,8 +37,8 @@ class UrlMapperTest {
     @DisplayName("없는 단축 URL 키로 원본 URL 조회 시 예외 발생 테스트")
     void getOriginalUrlByInvalidKey() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Key keyGen = new Key(randNumGen, limit);
         UrlMapper urlMapper = new UrlMapper(keyGen);
         String invalidKey = "ABC12345";
         String exceptionMessage = UrlErrorCode.NOT_EXIST_URL.getMessage();
@@ -52,8 +55,8 @@ class UrlMapperTest {
     @DisplayName("URL 조회 횟수 가져오기 기능 테스트")
     void UrlAccessCountTest() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        ShortenUrlKeyGenerator keyGen = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Key keyGen = new Key(randNumGen, limit);
         UrlMapper urlMapper = new UrlMapper(keyGen);
         String originalUrl = "http://a.com";
         Long expectAccessCount = 2L;

@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.common.dto.response;
+package yunsseong.shortenurl.common.exception.dto.response;
 
 import java.time.LocalDateTime;
 import lombok.Getter;

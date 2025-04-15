@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.api;
+package yunsseong.shortenurl.url.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import yunsseong.shortenurl.common.dto.request.AccessCountResponse;
-import yunsseong.shortenurl.common.dto.request.UrlRequest;
-import yunsseong.shortenurl.application.UrlMapper;
+import yunsseong.shortenurl.url.dto.response.AccessCountResponse;
+import yunsseong.shortenurl.url.dto.request.UrlRequest;
+import yunsseong.shortenurl.url.domain.UrlMapper;
 
 @RestController
 @RequiredArgsConstructor

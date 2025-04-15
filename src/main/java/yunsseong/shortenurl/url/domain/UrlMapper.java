@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.application;
+package yunsseong.shortenurl.url.domain;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yunsseong.shortenurl.common.exception.CustomException;
 import yunsseong.shortenurl.common.exception.error_code.UrlErrorCode;
-import yunsseong.shortenurl.domain.url.OriginalUrl;
+import yunsseong.shortenurl.key.domain.Key;
+import yunsseong.shortenurl.url.domain.OriginalUrl;
 
 @Service
 @RequiredArgsConstructor
 public class UrlMapper {
 
-    private final ShortenUrlKeyGenerator keyGen;
+    private final Key keyGen;
     private final Map<String, OriginalUrl> urlMap = new ConcurrentHashMap<>();
 
     public String makeNewMapping(String url) {

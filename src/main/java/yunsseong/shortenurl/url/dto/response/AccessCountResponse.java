@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.common.dto.request;
+package yunsseong.shortenurl.url.dto.response;
 
 public record AccessCountResponse(String shortenUrl, String originalUrl, Long accessCount) {
 }

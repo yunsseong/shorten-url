@@ -1,4 +1,4 @@
-package yunsseong.shortenurl.domain.url;
+package yunsseong.shortenurl.url.domain;
 
 public class OriginalUrl {
     private String url;

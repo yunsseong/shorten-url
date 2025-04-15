@@ -10,21 +10,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import yunsseong.shortenurl.common.exception.CustomException;
 import yunsseong.shortenurl.common.exception.error_code.KeyErrorCode;
-import yunsseong.shortenurl.domain.limit.Limitable;
-import yunsseong.shortenurl.domain.limit.ShortenKeyLengthLimit;
+import yunsseong.shortenurl.common.util.RandomNumber;
+import yunsseong.shortenurl.key.domain.Key;
+import yunsseong.shortenurl.limit.Limitable;
+import yunsseong.shortenurl.limit.Limit;
 
-class ShortenUrlKeyGeneratorTest {
+class KeyTest {
 
     @Test
     @DisplayName("단축된 URL의 키는 8글자로 생성되어야한다.")
     void shortenUrlKeyLengthTest() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        Limitable limit = new ShortenKeyLengthLimit();
-        ShortenUrlKeyGenerator shortenUrlKeyGenerator = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Limitable limit = new Limit();
+        Key key = new Key(randNumGen, limit);
 
         // when
-        String shortenUrlKey = shortenUrlKeyGenerator.generateShortenUrlKey();
+        String shortenUrlKey = key.generateShortenUrlKey();
 
         // then
         assertThat(shortenUrlKey.length()).isEqualTo(limit.getLimit());
@@ -35,18 +37,18 @@ class ShortenUrlKeyGeneratorTest {
     @DisplayName("단축된 URL의 키는 고유해야한다.")
     void uniqueShortenUrlKeyTest() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        Limitable limit = new ShortenKeyLengthLimit(3);
-        ShortenUrlKeyGenerator shortenUrlKeyGenerator = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Limitable limit = new Limit(3);
+        Key key = new Key(randNumGen, limit);
         List<String> result = new ArrayList<>();
 
         // when
-        for (int i = 0; i < shortenUrlKeyGenerator.getMaxLimit(); i++) {
-            result.add(shortenUrlKeyGenerator.getUniqueShortenUrlKey());
+        for (int i = 0; i < key.getMaxLimit(); i++) {
+            result.add(key.getUniqueShortenUrlKey());
         }
 
         // then
-        assertThat(result.size()).isEqualTo(shortenUrlKeyGenerator.getMaxLimit());
+        assertThat(result.size()).isEqualTo(key.getMaxLimit());
         assertThat(result.stream().distinct().count()).isEqualTo(result.size());
         System.out.println("result.size() = " + result.size());
     }
@@ -55,15 +57,15 @@ class ShortenUrlKeyGeneratorTest {
     @DisplayName("생성 가능한 키를 모두 소진 한 후 새로운 키를 요청하면 에러를 반환해야한다.")
     void exhaustAllKeyTest() {
         // given
-        RandomNumberGenerator randNumGen = new RandomNumberGenerator();
-        Limitable limit = new ShortenKeyLengthLimit(3);
-        ShortenUrlKeyGenerator shortenUrlKeyGenerator = new ShortenUrlKeyGenerator(randNumGen, limit);
+        RandomNumber randNumGen = new RandomNumber();
+        Limitable limit = new Limit(3);
+        Key key = new Key(randNumGen, limit);
         String expectMessage = KeyErrorCode.EXHAUST_ALL_KEY.getMessage();
 
         // when
         Exception exception = assertThrows(CustomException.class, () -> {
-            for (int i = 0; i < shortenUrlKeyGenerator.getMaxLimit() + 1; i++) {
-                shortenUrlKeyGenerator.getUniqueShortenUrlKey();
+            for (int i = 0; i < key.getMaxLimit() + 1; i++) {
+                key.getUniqueShortenUrlKey();
             }
         });
 

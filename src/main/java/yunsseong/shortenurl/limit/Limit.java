@@ -1,14 +1,14 @@
-package yunsseong.shortenurl.domain.limit;
+package yunsseong.shortenurl.limit;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class ShortenKeyLengthLimit implements Limitable{
+public class Limit implements Limitable{
     private int limit = 8;
 
-    public ShortenKeyLengthLimit(int limitLength) {
+    public Limit(int limitLength) {
         this.limit = limitLength;
     }
 
